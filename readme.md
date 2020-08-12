@@ -205,10 +205,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 Please feel free to contribute ideas and PRs are most welcome.
 
-## :lock: Security
-
-If you discover any security related issues, please email mailtokmahmed@gmail.com instead of using the issue tracker.
-
 ## :crown: Credits
 
 - [Kazi Mainuddin Ahmed][link-author]
