@@ -24,7 +24,7 @@ By default it comes with `Joi` validator. It also has support for `AJV` validati
 - [Joi Documentation](https://github.com/sideway/joi/blob/master/API.md)
 - [Ajv Documentation](https://github.com/ajv-validator/ajv/blob/master/README.md)
 
-#### Install Joi
+#### Setup Joi
 If you want to use joi then you'll have to install it as your project dependency.
 
 ```bash
