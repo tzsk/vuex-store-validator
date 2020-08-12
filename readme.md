@@ -54,7 +54,6 @@ export default new Vuex.Store({
 
 2. Add Rules to your store and respective modules
 
-- **Joi Example:**
 ```js
 // store.js
 import Joi from 'joi';
@@ -62,10 +61,7 @@ import VuexStoreValidator from 'vuex-store-validator';
 
 export default new Vuex.Store({
     rules: {
-        SET_USER: Joi.object({
-            name: Joi.string().required(),
-            email: Joi.email().required(),
-        }).required(),
+        SET_USER: **[SCHEMA HERE]**
     },
     state: {user: null},
     mutations: {
@@ -75,33 +71,27 @@ export default new Vuex.Store({
     },
     plugins: [new VuexStoreValidator()],
 });
+
+// Joi Schema...
+Joi.object({
+    name: Joi.string().required(),
+    email: Joi.email().required(),
+}).required(),
+
+// Ajv Schema...
+{
+    type: 'object',
+    properties: {
+        name: {type: 'string'},
+        email: {type: 'email'},
+    },
+    required: ['name', 'email'],
+}
 ```
 
-- **Ajv Example:**
+**NOTE:** For Ajv you will have to add the engine option in the plugin registration
 ```js
-// store.js
-import VuexStoreValidator, { ENGINE } from 'vuex-store-validator';
-
-export default new Vuex.Store({
-    rules: {
-        SET_USER: {
-            type: 'object',
-            properties: {
-                name: {type: 'string'},
-                email: {type: 'email'},
-            },
-            required: ['name', 'email'],
-        },
-    },
-    state: {user: null},
-    mutations: {
-        SET_USER(state, user) {
-            state.user = user;
-        }
-    },
-    // You can specify the engine here.
-    plugins: [new VuexStoreValidator({engine: ENGINE.AJV})],
-});
+plugins: [new VuexStoreValidator({engine: ENGINE.AJV})],
 ```
 
 **NOTE:** You can also add rules in your modules as well. It will only apply to that module only.
@@ -123,7 +113,7 @@ login({commit}, user) {
 // ValidationError: "email" field is required for mutation: SET_USER
 ```
 
-### Strict
+### Strict Mode
 
 #### What if you don't specify any schema for your Legacy Store?
 
@@ -144,3 +134,38 @@ If you set strict mode to `true`, then if you don't have a schema defined for an
 ### Caution
 
 This package won't prevent you from setting invalid data to your store. But it will throw appropriate exception everytime you set invalid data, so that you can be aware where bad data might be coming from.
+
+
+## Testing
+
+After Cloning the repository, install all npm dependecies by running: `npm install`.
+
+Then Run Tests:
+
+```bash
+$ npm run test
+```
+
+## Change log
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Contributing
+
+Please feel free to contribute ideas and PRs are most welcome.
+
+## Security
+
+If you discover any security related issues, please email mailtokmahmed@gmail.com instead of using the issue tracker.
+
+## Credits
+
+- [Kazi Mainuddin Ahmed][link-author]
+- [All Contributors][link-contributors]
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
+
+[link-author]: https://github.com/tzsk
+[link-contributors]: ../../contributors
