@@ -1,10 +1,11 @@
 # :gift: Vuex Store Validator
 ![Vuex Store Validator](./assets/main.png)
 
-[![Build Status](https://github.com/tzsk/vuex-store-validator/workflows/Tests/badge.svg)](https://github.com/tzsk/vuex-store-validator/actions?workflow=Tests)
-[![NPM Version](https://img.shields.io/npm/v/vuex-store-validator.svg)](https://www.npmjs.com/package/vuex-store-validator)
-[![NPM Downloads](https://img.shields.io/npm/dm/vuex-store-validator.svg)](https://www.npmjs.com/package/vuex-store-validator)
-[![Coverage Status](https://coveralls.io/repos/github/tzsk/vuex-store-validator/badge.svg?branch=master)](https://coveralls.io/github/vuex-store-validator-validator/vuex-store-validator?branch=master)
+![Build](https://img.shields.io/github/workflow/status/tzsk/vuex-store-validator/Tests/master?logo=github&style=for-the-badge)
+![Coveralls](https://img.shields.io/coveralls/github/tzsk/vuex-store-validator/master?logo=coveralls&style=for-the-badge)
+[![npm](https://img.shields.io/npm/v/vuex-store-validator?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/vuex-store-validator)
+[![npm](https://img.shields.io/npm/dt/vuex-store-validator?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/vuex-store-validator)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/vuex-store-validator?logo=mini&style=for-the-badge)
 
 This package helps you to validate how you mutate your Vuex store. You can say that it is a Validator for the mutations. You can easily validate the payload for each of your mutations, so that you can be sure of the integrity of your Store Data.
 
