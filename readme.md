@@ -1,4 +1,4 @@
-# Vuex Store Validator
+# :gift: Vuex Store Validator
 ![Vuex Store Validator](./assets/main.png)
 
 [![Build Status](https://github.com/tzsk/vuex-store-validator/workflows/Tests/badge.svg)](https://github.com/tzsk/vuex-store-validator/actions?workflow=Tests)
@@ -8,9 +8,11 @@
 
 This package helps you to validate how you mutate your Vuex store. You can say that it is a Validator for the mutations. You can easily validate the payload for each of your mutations, so that you can be sure of the integrity of your Store Data.
 
+This package also has support for any custom schema validator you may choose. You can create your own implementation and extend this package to use that shcema.
+
 Though Vuex allowes you to set the store state directly without calling any mutation. This package won't validate anything outside the mutations mutations.
 
-## Installation
+## :package: Installation
 
 ```bash
 // NPM:
@@ -38,7 +40,7 @@ $ yarn add joi
 #### Setup Ajv
 If you think that ajv is best for you then you won't have to install anything as the schema builder is plain javascript object.
 
-## Usage
+## :fire: Usage
 
 1. Add the validator to the plugins section of your Root Store.
 
@@ -57,11 +59,11 @@ export default new Vuex.Store({
 ```js
 // store.js
 import Joi from 'joi';
-import VuexStoreValidator from 'vuex-store-validator';
+import VuexStoreValidator, { ENGINE } from 'vuex-store-validator';
 
 export default new Vuex.Store({
     rules: {
-        SET_USER: **[SCHEMA HERE]**
+        SET_USER: ...SCHEMA HERE...
     },
     state: {user: null},
     mutations: {
@@ -94,9 +96,7 @@ Joi.object({
 plugins: [new VuexStoreValidator({engine: ENGINE.AJV})],
 ```
 
-**NOTE:** You can also add rules in your modules as well. It will only apply to that module only.
-
-### Congratulations! You're all done.
+### :tada: Congratulations! You're all done.
 
 Now whenever you call the mutation from anywhere be it inside an action or from any comonent. The payload you pass will be validated against the schema you've defined.
 
@@ -113,7 +113,9 @@ login({commit}, user) {
 // ValidationError: "email" field is required for mutation: SET_USER
 ```
 
-### Strict Mode
+This will work for all the nested modules as well. Just remember to add a new `rules` option to your module definition with state, action etc.
+
+### :muscle: Strict Mode
 
 #### What if you don't specify any schema for your Legacy Store?
 
@@ -131,12 +133,61 @@ export default new Vuex.Store({
 
 If you set strict mode to `true`, then if you don't have a schema defined for any of your mutation, it will throw an exception.
 
-### Caution
+### :boom: Custom Validatior Usage
 
-This package won't prevent you from setting invalid data to your store. But it will throw appropriate exception everytime you set invalid data, so that you can be aware where bad data might be coming from.
+```js
+// Define a validator...
+/**
+ * It accepts the schema and the data payload
+ * The return value should be the error string or null
+ */
+const myCustomValidator = (schema, data) => {
+    const schemaArray = Object.keys(schema);
 
+    let error = null;
+    for (let index = 0; index < schemaArray.length; index++) {
+        const key = schemaArray[index];
 
-## Testing
+        if (schema[key](data[key]) !== data[key]) {
+        error = `ValidationError: "${key}" is required`;
+        break;
+        }
+    }
+
+    return error;
+};
+
+// Now extend with the custom validator...
+plugins: [
+    new VuexStoreValidator({
+        engine: 'custom',
+        extend: {
+            custom: myCustomValidator,
+        },
+    })
+]
+
+// Make sure that the engine name and the extend key are the same
+
+// Now your schema would look something like this:
+rules: {
+    MUTATION_NAME: {
+        name: String,
+        email: String,
+        age: Number,
+    },
+}
+```
+
+You can also leverage Vue PropType Validator and make your own implementation of that. Maybe even React PropType validator. Or anything you like.
+
+### :eyes: Caution
+
+This package won't prevent you from setting invalid data to your store. But it will throw appropriate exception everytime you set invalid data, so that you can be aware of where bad data might be coming from.
+
+You can see and debug your code based on the Production Logs related to any bad data. If you are using Ignition or Sentry.
+
+## :microscope: Testing
 
 After Cloning the repository, install all npm dependecies by running: `npm install`.
 
@@ -146,24 +197,24 @@ Then Run Tests:
 $ npm run test
 ```
 
-## Change log
+## :date: Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
+## :heart: Contributing
 
 Please feel free to contribute ideas and PRs are most welcome.
 
-## Security
+## :lock: Security
 
 If you discover any security related issues, please email mailtokmahmed@gmail.com instead of using the issue tracker.
 
-## Credits
+## :crown: Credits
 
 - [Kazi Mainuddin Ahmed][link-author]
 - [All Contributors][link-contributors]
 
-## License
+## :policeman: License
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
