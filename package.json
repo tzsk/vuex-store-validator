@@ -1,0 +1,61 @@
+{
+  "name": "vuex-store-validator",
+  "version": "1.0.0",
+  "description": "Validate Vuex Commits with Joi and Ajv Schema",
+  "source": "src/index.js",
+  "module": "dist/index.module.js",
+  "unpkg": "dist/index.umd.js",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch",
+    "test": "jest",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tzsk/vuex-store-validator.git"
+  },
+  "keywords": [
+    "vuex",
+    "validator",
+    "vuex validation",
+    "vuex validate store",
+    "vuex store validator",
+    "vuex joi validator",
+    "vuex ajv validator"
+  ],
+  "author": {
+    "name": "Kazi Mainuddin Ahmed",
+    "email": "mailtokmahmed@gmail.com",
+    "url": "https://github.com/tzsk"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tzsk/vuex-store-validator/issues"
+  },
+  "homepage": "https://github.com/tzsk/vuex-store-validator#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@types/jest": "^26.0.9",
+    "babel-jest": "^26.3.0",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "jest": "^26.3.0",
+    "microbundle": "^0.12.3",
+    "vue": "^2.6.11",
+    "vuex": "^3.5.1"
+  },
+  "dependencies": {
+    "ajv": "^6.12.3",
+    "core-js": "^3.6.5",
+    "joi": "^17.2.0"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.11",
+    "vuex": "^3.5.1"
+  }
+}
