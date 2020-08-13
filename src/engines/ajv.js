@@ -9,5 +9,5 @@ export default (schema, data) => {
 
   const { errors } = validate;
 
-  return errors ? `ValidationError: ${getErrorMessages(errors)}` : false;
+  return errors && getErrorMessages(errors);
 };

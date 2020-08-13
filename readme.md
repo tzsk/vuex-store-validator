@@ -5,7 +5,6 @@
 ![Coveralls](https://img.shields.io/coveralls/github/tzsk/vuex-store-validator/master?logo=coveralls&style=for-the-badge)
 [![npm](https://img.shields.io/npm/v/vuex-store-validator?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/vuex-store-validator)
 [![npm](https://img.shields.io/npm/dt/vuex-store-validator?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/vuex-store-validator)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/vuex-store-validator?logo=mini&style=for-the-badge)
 
 This package helps you to validate how you mutate your Vuex store. You can say that it is a Validator for the mutations. You can easily validate the payload for each of your mutations, so that you can be sure of the integrity of your Store Data.
 
@@ -101,7 +100,7 @@ plugins: [new VuexStoreValidator({engine: ENGINE.AJV})],
 
 Now whenever you call the mutation from anywhere be it inside an action or from any comonent. The payload you pass will be validated against the schema you've defined.
 
-For the piece of code if you try and call the `SET_USER` mutation without valid data:
+For the above piece of code if you try and call the `SET_USER` mutation without valid data:
 ```js
 // From a Component
 this.$store.commit('SET_USER', {name: 'John'});
@@ -115,6 +114,26 @@ login({commit}, user) {
 ```
 
 This will work for all the nested modules as well. Just remember to add a new `rules` option to your module definition with state, action etc.
+
+### :star: Closure Support
+
+Let's face it, the real world projects are complex. It's not as straight forward as defining a schema. Sometimes you need to have conditional schema which depends on some other state property or the mutation payload itself.
+
+But don't worry, you can even define the schema in a closure. You have 2 parameters available in that clsoure. The store and the mutation payload itself.
+
+**Example:**
+```js
+rules: {
+    SET_USER(store, data) {
+        // Store -> Global Store instance
+        // Data -> {name: 'John'}
+
+        return Joi.object({
+            ...
+        });
+    }
+}
+```
 
 ### :muscle: Strict Mode
 
@@ -150,7 +169,7 @@ const myCustomValidator = (schema, data) => {
         const key = schemaArray[index];
 
         if (schema[key](data[key]) !== data[key]) {
-        error = `ValidationError: "${key}" is required`;
+        error = `"${key}" is required`;
         break;
         }
     }

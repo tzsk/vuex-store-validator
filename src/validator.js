@@ -1,4 +1,5 @@
 import factory from './factory';
+import ValidationError from './exception';
 
 const validator = ({ extend, strict, engine }) => (store) => {
   const { _modules: modules, _modulesNamespaceMap: modulesNamespaceMap } = store;
@@ -14,25 +15,28 @@ const validator = ({ extend, strict, engine }) => (store) => {
     return module;
   };
 
-  const getRulesByType = (type) => {
+  const getRulesByType = (type, payload) => {
     const target = '_rawModule';
     const pathArray = type.split('/');
     const fn = pathArray.pop();
     const module = getModuleByNamespace(pathArray.join('/'));
     const { rules = {} } = (module || modules.root)[target];
+    const schema = rules[fn];
 
-    if (strict && !rules[fn]) {
-      throw new Error(`[Strict Mode] Rules are not defined for: ${type}`);
+    if (strict && !schema) {
+      throw new ValidationError(`[Strict Mode] Rules are not defined for: ${type}`);
     }
 
-    return rules[fn];
+    return (typeof schema === 'function') ? schema(store, payload) : schema;
   };
 
   store.subscribe(({ type, payload }) => {
-    const error = factory(engine, extend)(getRulesByType(type), payload);
+    const execute = factory(engine, extend);
+    const schema = getRulesByType(type, payload);
+    const error = execute(schema, payload);
 
     if (error) {
-      throw new Error(`${error} for mutation: ${type}`);
+      throw new ValidationError(`${error} for mutation: ${type}`);
     }
   });
 };
