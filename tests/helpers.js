@@ -6,6 +6,8 @@ import VuexStoreValidator, { ENGINE } from '../src';
 
 Vue.use(Vuex);
 
+export const SET_POST_AUTHOR = jest.fn();
+
 export const validStore = new Vuex.Store({
   modules: {
     post: {
@@ -15,6 +17,7 @@ export const validStore = new Vuex.Store({
           title: Joi.string().required(),
           body: Joi.string().required(),
         }).unknown().required(),
+        SET_POST_AUTHOR,
       },
       state: {
         post: null,
@@ -22,6 +25,9 @@ export const validStore = new Vuex.Store({
       mutations: {
         SET_POST(state, post) {
           state.post = post;
+        },
+        SET_POST_AUTHOR(state, author) {
+          state.author = author;
         },
       },
     },
@@ -124,9 +130,9 @@ export const customStore = new Vuex.Store({
     },
   },
   plugins: [new VuexStoreValidator({
-    engine: 'bar',
+    engine: 'custom',
     extend: {
-      bar: (schema, data) => {
+      custom: (schema, data) => {
         const schemaArray = Object.keys(schema);
 
         let error = null;
@@ -135,12 +141,12 @@ export const customStore = new Vuex.Store({
           const key = schemaArray[index];
 
           if (schema[key](data[key]) !== data[key]) {
-            error = `ValidationError: "${key}" is required`;
+            error = `"${key}" is required`;
             break;
           }
         }
 
-        return error || false;
+        return error;
       },
     },
   })],
