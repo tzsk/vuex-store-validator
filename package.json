@@ -1,6 +1,6 @@
 {
   "name": "vuex-store-validator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Validate Vuex Commits with Joi and Ajv Schema",
   "source": "src/index.js",
   "module": "dist/index.module.js",
