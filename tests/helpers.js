@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Joi from 'joi';
+import { object, string, number } from 'superstruct';
 import VuexStoreValidator, { ENGINE } from '../src';
 
 Vue.use(Vuex);
@@ -110,8 +111,32 @@ export const ajvStore = new Vuex.Store({
     SET_USER(state, data) {
       state.user = data;
     },
+    SET_AUTHOR(state, data) {
+      state.user = data;
+    },
   },
   plugins: [new VuexStoreValidator({ engine: ENGINE.AJV })],
+});
+
+export const superStructStore = new Vuex.Store({
+  rules: {
+    SET_USER: object({
+      name: string(),
+      age: number(),
+    }),
+  },
+  state: {
+    user: null,
+  },
+  mutations: {
+    SET_USER(state, data) {
+      state.user = data;
+    },
+    SET_AUTHOR(state, data) {
+      state.user = data;
+    },
+  },
+  plugins: [new VuexStoreValidator({ engine: ENGINE.SUPERSTRUCT })],
 });
 
 export const customStore = new Vuex.Store({

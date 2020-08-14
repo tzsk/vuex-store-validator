@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import {
-  validStore, strictStore, invalidStore, ajvStore, customStore, SET_POST_AUTHOR,
+  validStore, strictStore, invalidStore, ajvStore,
+  customStore, superStructStore, SET_POST_AUTHOR,
 } from './helpers';
 
 describe('Validator', () => {
@@ -49,6 +50,19 @@ describe('Validator', () => {
       .toThrowError(/should have required property 'age' for mutation: SET_USER/);
 
     expect(() => ajvStore.commit('SET_USER', { name: 'foo', age: 25 })).not.toThrowError();
+  });
+  test('it can also validate ajv without any schema defined', () => {
+    expect(() => ajvStore.commit('SET_AUTHOR', { name: 'foo' })).not.toThrowError();
+  });
+
+  test('it can also validate with superstruct engine', () => {
+    expect(() => superStructStore.commit('SET_USER', { name: 'foo' }))
+      .toThrowError(/Expected a value of type `number` for `age` but received `undefined`. for mutation: SET_USER/);
+
+    expect(() => superStructStore.commit('SET_USER', { name: 'foo', age: 25 })).not.toThrowError();
+  });
+  test('it can also validate superstruct without any schema defined', () => {
+    expect(() => superStructStore.commit('SET_AUTHOR', { name: 'foo' })).not.toThrowError();
   });
 
   test('it can also validate with custom engine', () => {

@@ -23,7 +23,8 @@
     "vuex validate store",
     "vuex store validator",
     "vuex joi validator",
-    "vuex ajv validator"
+    "vuex ajv validator",
+    "vuex superstruct validator"
   ],
   "author": {
     "name": "Kazi Mainuddin Ahmed",
@@ -52,7 +53,8 @@
   "dependencies": {
     "ajv": "^6.12.3",
     "core-js": "^3.6.5",
-    "joi": "^17.2.0"
+    "joi": "^17.2.0",
+    "superstruct": "^0.10.12"
   },
   "peerDependencies": {
     "vue": "^2.6.11",
