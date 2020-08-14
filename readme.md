@@ -10,7 +10,7 @@ This package helps you to validate how you mutate your Vuex store. You can say t
 
 This package also has support for any custom schema validator you may choose. You can create your own implementation and extend this package to use that shcema.
 
-Though Vuex allowes you to set the store state directly without calling any mutation. This package won't validate anything outside the mutations mutations.
+Though Vuex allows you to set the store state directly without calling any mutation. This package won't validate anything outside the mutations.
 
 ## :package: Installation
 
@@ -98,7 +98,7 @@ plugins: [new VuexStoreValidator({engine: ENGINE.AJV})],
 
 ### :tada: Congratulations! You're all done.
 
-Now whenever you call the mutation from anywhere be it inside an action or from any comonent. The payload you pass will be validated against the schema you've defined.
+Now whenever you call the mutation from anywhere be it inside an action or from any component. The payload you pass will be validated against the schema you've defined.
 
 For the above piece of code if you try and call the `SET_USER` mutation without valid data:
 ```js
