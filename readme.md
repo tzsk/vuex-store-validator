@@ -22,9 +22,10 @@ $ npm install --save vuex-store-validator
 $ yarn add vuex-store-validator
 ```
 
-By default it comes with `Joi` validator. It also has support for `AJV` validation engine. Read their respective docs to find out which one is best for you.
+By default it comes with `Joi` validator. It also has support for `AJV` and `Superstruct` validation engine. Read their respective docs to find out which one is best for you.
 - [Joi Documentation](https://github.com/sideway/joi/blob/master/API.md)
 - [Ajv Documentation](https://github.com/ajv-validator/ajv/blob/master/README.md)
+- [Superstruct Documentation](https://github.com/ianstormtaylor/superstruct/blob/master/Readme.md)
 
 #### Setup Joi
 If you want to use joi then you'll have to install it as your project dependency.
@@ -35,6 +36,17 @@ $ npm install --save joi
 
 // Yarn:
 $ yarn add joi
+```
+
+#### Setup Superstruct
+If you want to use superstruct then you'll have to install it as your project dependency.
+
+```bash
+// NPM:
+$ npm install --save superstruct
+
+// Yarn:
+$ yarn add superstruct
 ```
 
 #### Setup Ajv
@@ -58,7 +70,6 @@ export default new Vuex.Store({
 
 ```js
 // store.js
-import Joi from 'joi';
 import VuexStoreValidator, { ENGINE } from 'vuex-store-validator';
 
 export default new Vuex.Store({
@@ -75,25 +86,37 @@ export default new Vuex.Store({
 });
 
 // Joi Schema...
-Joi.object({
+import Joi from 'joi';
+SET_USER: Joi.object({
     name: Joi.string().required(),
-    email: Joi.email().required(),
+    age: Joi.number().required(),
 }).required(),
 
 // Ajv Schema...
-{
+SET_USER: {
     type: 'object',
     properties: {
         name: {type: 'string'},
-        email: {type: 'email'},
+        age: {type: 'number'},
     },
-    required: ['name', 'email'],
-}
+    required: ['name', 'age'],
+},
+
+// Superstruct Schema...
+import {object, string, number} from 'superstruct';
+SET_USER: object({
+    name: string(),
+    age: number(),
+}),
 ```
 
-**NOTE:** For Ajv you will have to add the engine option in the plugin registration
+**NOTE:** If you want to use anything other than Joi then, you will have to add the engine option in the plugin registration
 ```js
+// Ajv...
 plugins: [new VuexStoreValidator({engine: ENGINE.AJV})],
+
+// Superstruct...
+plugins: [new VuexStoreValidator({engine: ENGINE.SUPERSTRUCT})],
 ```
 
 ### :tada: Congratulations! You're all done.
