@@ -9,7 +9,7 @@ Vue.use(Vuex);
 
 export const SET_POST_AUTHOR = jest.fn();
 
-export const validStore = new Vuex.Store({
+export const store = new Vuex.Store({
   modules: {
     post: {
       namespaced: true,
@@ -65,30 +65,6 @@ export const validStore = new Vuex.Store({
   plugins: [new VuexStoreValidator()],
 });
 
-export const strictStore = new Vuex.Store({
-  state: {
-    user: null,
-  },
-  mutations: {
-    SET_USER(state, data) {
-      state.user = data;
-    },
-  },
-  plugins: [new VuexStoreValidator({ strict: true })],
-});
-
-export const invalidStore = new Vuex.Store({
-  state: {
-    user: null,
-  },
-  mutations: {
-    SET_USER(state, data) {
-      state.user = data;
-    },
-  },
-  plugins: [new VuexStoreValidator({ engine: 'foo', strict: true })],
-});
-
 export const ajvStore = new Vuex.Store({
   rules: {
     SET_USER: {
@@ -139,6 +115,43 @@ export const superStructStore = new Vuex.Store({
   plugins: [new VuexStoreValidator({ engine: ENGINE.SUPERSTRUCT })],
 });
 
+export const strictStore = new Vuex.Store({
+  rules: {
+    SET_USER: Joi.object({
+      name: Joi.string().required(),
+      age: Joi.number().required(),
+    }).required(),
+  },
+  state: {
+    user: null,
+  },
+  mutations: {
+    SET_USER(state, data) {
+      state.user = data;
+    },
+    SET_AUTHOR(state, data) {
+      state.user = data;
+    },
+  },
+  plugins: [new VuexStoreValidator({ strict: true })],
+});
+
+export const customValidator = (schema, data) => {
+  const schemaArray = Object.keys(schema);
+  let error = null;
+
+  // eslint-disable-next-line no-plusplus
+  for (let index = 0; index < schemaArray.length; index++) {
+    const key = schemaArray[index];
+
+    if (schema[key](data[key]) !== data[key]) {
+      error = `"${key}" is required`;
+    }
+  }
+
+  return error;
+};
+
 export const customStore = new Vuex.Store({
   rules: {
     SET_USER: {
@@ -154,25 +167,5 @@ export const customStore = new Vuex.Store({
       state.user = data;
     },
   },
-  plugins: [new VuexStoreValidator({
-    engine: 'custom',
-    extend: {
-      custom: (schema, data) => {
-        const schemaArray = Object.keys(schema);
-
-        let error = null;
-        // eslint-disable-next-line no-plusplus
-        for (let index = 0; index < schemaArray.length; index++) {
-          const key = schemaArray[index];
-
-          if (schema[key](data[key]) !== data[key]) {
-            error = `"${key}" is required`;
-            break;
-          }
-        }
-
-        return error;
-      },
-    },
-  })],
+  plugins: [new VuexStoreValidator({ engine: 'custom', extend: { custom: customValidator } })],
 });

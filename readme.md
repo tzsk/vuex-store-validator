@@ -179,25 +179,22 @@ If you set strict mode to `true`, then if you don't have a schema defined for an
 ### :boom: Custom Validatior Usage
 
 ```js
-// Define a validator...
+// Define an async validator...
 /**
  * It accepts the schema and the data payload
+ * It should throw an error if your validaion fails OR
  * The return value should be the error string or null
  */
-const myCustomValidator = (schema, data) => {
+const myCustomValidator = async (schema, data) => {
     const schemaArray = Object.keys(schema);
 
-    let error = null;
     for (let index = 0; index < schemaArray.length; index++) {
         const key = schemaArray[index];
 
         if (schema[key](data[key]) !== data[key]) {
-        error = `"${key}" is required`;
-        break;
+            throw new Error(`"${key}" is required`);
         }
     }
-
-    return error;
 };
 
 // Now extend with the custom validator...

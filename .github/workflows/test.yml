@@ -1,5 +1,5 @@
 name: Tests
-on: push
+on: [push, pull_request]
 env:
   CI: true
 
@@ -30,7 +30,7 @@ jobs:
         run: npm run lint
 
       - name: Run tests
-        run: npm run test
+        run: npm run test:ci
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
