@@ -1,6 +1,5 @@
-export default (schema, data) => {
-  const format = schema || { validate: () => ({}) };
-  const { error } = format.validate(data);
+export default async (schema, data) => {
+  const format = schema || { validateAsync: async () => ({}) };
 
-  return error && error.message;
+  await format.validateAsync(data);
 };

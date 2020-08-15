@@ -1,7 +1,8 @@
 import factory from './factory';
 import ValidationError from './exception';
 
-const validator = ({ extend, strict, engine }) => (store) => {
+const validator = (store, params) => {
+  const { extend, strict, engine } = params;
   const { _modules: modules, _modulesNamespaceMap: modulesNamespaceMap } = store;
 
   const getModuleByNamespace = (namespace) => {
@@ -10,35 +11,42 @@ const validator = ({ extend, strict, engine }) => (store) => {
       name += '/';
     }
 
-    const module = modulesNamespaceMap[name];
-
-    return module;
+    return modulesNamespaceMap[name] || modules.root;
   };
 
-  const getRulesByType = (type, payload) => {
-    const target = '_rawModule';
-    const pathArray = type.split('/');
-    const fn = pathArray.pop();
-    const module = getModuleByNamespace(pathArray.join('/'));
-    const { rules = {} } = (module || modules.root)[target];
-    const schema = rules[fn];
+  const getRulesByType = (type) => {
+    const pathSplit = type.split('/');
+    const mutation = pathSplit.pop();
+    const { _rawModule: rawModule } = getModuleByNamespace(pathSplit.join('/'));
+    const schema = (rawModule.rules || {})[mutation];
 
     if (strict && !schema) {
       throw new ValidationError(`[Strict Mode] Rules are not defined for: ${type}`);
     }
 
-    return (typeof schema === 'function') ? schema(store, payload) : schema;
+    return (typeof schema === 'function') ? schema : () => schema;
   };
 
-  store.subscribe(({ type, payload }) => {
-    const execute = factory(engine, extend);
-    const schema = getRulesByType(type, payload);
-    const error = execute(schema, payload);
+  const Worker = {
+    execute: async ({ type, payload }) => {
+      const schema = await getRulesByType(type, payload)(store, payload);
+      const handler = await factory(engine, extend);
+      const error = await handler(schema, payload);
 
-    if (error) {
-      throw new ValidationError(`${error} for mutation: ${type}`);
-    }
-  });
+      if (error) {
+        throw new Error(error);
+      }
+    },
+    validate: async ({ type, payload }) => {
+      try {
+        await Worker.execute({ type, payload });
+      } catch ({ message }) {
+        throw new ValidationError(`${message} for mutation: ${type}`);
+      }
+    },
+  };
+
+  return Worker;
 };
 
 export default validator;
