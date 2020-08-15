@@ -30,7 +30,7 @@ const validator = (store, params) => {
   const Worker = {
     execute: async ({ type, payload }) => {
       const schema = await getRulesByType(type, payload)(store, payload);
-      const handler = await factory(engine, extend);
+      const handler = factory(engine, extend);
       const error = await handler(schema, payload);
 
       if (error) {
