@@ -1,9 +1,9 @@
 import Joi from 'joi';
 import {
-  store, ajvStore, customStore, superStructStore, SET_POST_AUTHOR, customValidator,
+  store, ajvStore, customStore, superStructStore, SET_POST_AUTHOR, customValidator, yupStore,
 } from './helpers';
 import validator from '../src/validator';
-import { ENGINE } from '../src';
+import { ENGINE } from '../src/main';
 
 const executeValidaton = async (storeObject, type, payload, params = { }) => {
   await validator(storeObject, { engine: ENGINE.JOI, ...params }).validate({ type, payload });
@@ -78,6 +78,19 @@ describe('Validator', () => {
   });
   test('it can also validate superstruct without any schema defined', async () => {
     await expect(executeValidaton(superStructStore, 'SET_AUTHOR', { name: 'foo' }, { engine: ENGINE.SUPERSTRUCT }))
+      .resolves.not.toThrowError();
+  });
+
+  test('it can also validate with yup engine', async () => {
+    await expect(executeValidaton(yupStore, 'SET_USER', { name: 'foo' }, { engine: ENGINE.YUP }))
+      .rejects
+      .toThrowError(/age is a required field for mutation: SET_USER/);
+
+    await expect(executeValidaton(yupStore, 'SET_USER', { name: 'foo', age: 25 }, { engine: ENGINE.YUP }))
+      .resolves.not.toThrowError();
+  });
+  test('it can also validate yup without any schema defined', async () => {
+    await expect(executeValidaton(yupStore, 'SET_AUTHOR', { name: 'foo' }, { engine: ENGINE.YUP }))
       .resolves.not.toThrowError();
   });
 

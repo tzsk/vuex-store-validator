@@ -1,5 +1,18 @@
 # Changelog
 
+## Version: 1.3.0
+### Added
+- Support for Yup Validator
+### Changed
+- Changed entry file to `main.js` convention
+- Move to `webpack` from `rollup` as a bundler
+
+## Version: 1.2.0
+### Added
+- Support for Async Validator Functions
+### Changed
+- Moved to `rollup` from `microbundle` as a bundler
+
 ## Version: 1.1.0
 ### Added
 - Support for Superstruct Validator

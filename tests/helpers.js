@@ -2,8 +2,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Joi from 'joi';
+import * as Yup from 'yup';
 import { object, string, number } from 'superstruct';
-import VuexStoreValidator, { ENGINE } from '../src';
+import VuexStoreValidator, { ENGINE } from '../src/main';
 
 Vue.use(Vuex);
 
@@ -113,6 +114,27 @@ export const superStructStore = new Vuex.Store({
     },
   },
   plugins: [new VuexStoreValidator({ engine: ENGINE.SUPERSTRUCT })],
+});
+
+export const yupStore = new Vuex.Store({
+  rules: {
+    SET_USER: Yup.object().shape({
+      name: Yup.string().required(),
+      age: Yup.number().required(),
+    }).required(),
+  },
+  state: {
+    user: null,
+  },
+  mutations: {
+    SET_USER(state, data) {
+      state.user = data;
+    },
+    SET_AUTHOR(state, data) {
+      state.user = data;
+    },
+  },
+  plugins: [new VuexStoreValidator({ engine: ENGINE.YUP })],
 });
 
 export const strictStore = new Vuex.Store({
