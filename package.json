@@ -1,11 +1,11 @@
 {
   "name": "vuex-store-validator",
   "version": "1.2.0",
-  "description": "Validate Vuex Commits with Joi and Ajv Schema",
-  "main": "dist/index.js",
+  "description": "Validate Vuex Commits with Joi, Ajv, Superstruct & Yup Schema",
+  "main": "src/main.js",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "dev": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "test": "jest --verbose",
     "test:ci": "jest --ci --verbose",
     "lint": "eslint src"
@@ -37,26 +37,25 @@
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
-    "@rollup/plugin-commonjs": "^11.0.1",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^7.0.0",
     "@types/jest": "^26.0.9",
     "babel-jest": "^26.3.0",
+    "cross-env": "^7.0.2",
     "eslint": "^7.6.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^23.20.0",
     "jest": "^26.3.0",
-    "rollup": "^1.16.2",
-    "rollup-plugin-terser": "^5.0.0",
+    "laravel-mix": "^5.0.4",
     "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11",
     "vuex": "^3.5.1"
   },
   "dependencies": {
     "ajv": "^6.12.3",
     "core-js": "^3.6.5",
     "joi": "^17.2.0",
-    "superstruct": "^0.10.12"
+    "superstruct": "^0.10.12",
+    "yup": "^0.29.3"
   },
   "peerDependencies": {
     "vue": "^2.6.11",

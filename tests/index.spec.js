@@ -1,5 +1,5 @@
 import {
-  store, ajvStore, superStructStore, customStore, customValidator, strictStore,
+  store, ajvStore, superStructStore, customStore, customValidator, strictStore, yupStore,
 } from './helpers';
 import validator from '../src/validator';
 
@@ -39,6 +39,15 @@ describe('Plugin', () => {
     superStructStore.commit('SET_USER', { foo: 'bar' });
 
     expect(validator).toHaveBeenCalledWith(superStructStore, { engine: 'superstruct', strict: false, extend: {} });
+    expect(validate).toHaveBeenCalledWith({ type: 'SET_USER', payload: { foo: 'bar' } });
+  });
+
+  test('it should should pass the proper type and payload with yup', () => {
+    const validate = jest.fn();
+    validator.mockReturnValue({ validate });
+    yupStore.commit('SET_USER', { foo: 'bar' });
+
+    expect(validator).toHaveBeenCalledWith(yupStore, { engine: 'yup', strict: false, extend: {} });
     expect(validate).toHaveBeenCalledWith({ type: 'SET_USER', payload: { foo: 'bar' } });
   });
 
