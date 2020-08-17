@@ -1,5 +1,14 @@
 # Changelog
 
+## Version: 2.0.0
+### Removed
+- Removed AJV from the bundle (Can be setup manually)
+- Removed other unnecessary dependencies
+### Changed
+- Reduced bundle size from `50kb` gzipped to about `7kb` gzipped by removing ajv
+### Fixed
+- Readme Typo fixes
+
 ## Version: 1.3.0
 ### Added
 - Support for Yup Validator

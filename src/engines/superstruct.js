@@ -1,7 +1,9 @@
-import { assert, any } from 'superstruct';
+import { assert } from 'superstruct';
 
 export default async (schema, data) => {
-  assert(data, schema || any());
+  if (schema) {
+    assert(data, schema);
 
-  await Promise.resolve();
+    await Promise.resolve();
+  }
 };

@@ -66,35 +66,6 @@ export const store = new Vuex.Store({
   plugins: [new VuexStoreValidator()],
 });
 
-export const ajvStore = new Vuex.Store({
-  rules: {
-    SET_USER: {
-      type: 'object',
-      properties: {
-        name: {
-          type: 'string',
-        },
-        age: {
-          type: 'number',
-        },
-      },
-      required: ['name', 'age'],
-    },
-  },
-  state: {
-    user: null,
-  },
-  mutations: {
-    SET_USER(state, data) {
-      state.user = data;
-    },
-    SET_AUTHOR(state, data) {
-      state.user = data;
-    },
-  },
-  plugins: [new VuexStoreValidator({ engine: ENGINE.AJV })],
-});
-
 export const superStructStore = new Vuex.Store({
   rules: {
     SET_USER: object({

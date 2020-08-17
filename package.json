@@ -1,7 +1,7 @@
 {
   "name": "vuex-store-validator",
   "version": "1.3.0",
-  "description": "Validate Vuex Commits with Joi, Ajv, Superstruct & Yup Schema",
+  "description": "Validate Vuex Commits with Joi, Superstruct & Yup Schema",
   "main": "src/main.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -21,7 +21,7 @@
     "vuex validate store",
     "vuex store validator",
     "vuex joi validator",
-    "vuex ajv validator",
+    "vuex yup validator",
     "vuex superstruct validator"
   ],
   "author": {
@@ -45,17 +45,16 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^23.20.0",
     "jest": "^26.3.0",
+    "joi": "^17.2.0",
     "laravel-mix": "^5.0.4",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
-    "vuex": "^3.5.1"
+    "vuex": "^3.5.1",
+    "yup": "^0.29.3"
   },
   "dependencies": {
-    "ajv": "^6.12.3",
     "core-js": "^3.6.5",
-    "joi": "^17.2.0",
-    "superstruct": "^0.10.12",
-    "yup": "^0.29.3"
+    "superstruct": "^0.10.12"
   },
   "peerDependencies": {
     "vue": "^2.6.11",

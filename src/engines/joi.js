@@ -1,5 +1,5 @@
 export default async (schema, data) => {
-  const format = schema || { validateAsync: async () => ({}) };
-
-  await format.validateAsync(data);
+  if (schema) {
+    await schema.validateAsync(data);
+  }
 };
