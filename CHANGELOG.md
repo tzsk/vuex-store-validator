@@ -5,7 +5,7 @@
 - Removed AJV from the bundle (Can be setup manually)
 - Removed other unnecessary dependencies
 ### Changed
-- Reduced bundle size from `50kb` gzipped to about `7kb` gzipped by removing ajv
+- Reduced bundle size from `50kb` gzipped to about `1.7kb` gzipped by removing ajv
 ### Fixed
 - Readme Typo fixes
 
