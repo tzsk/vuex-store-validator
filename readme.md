@@ -8,7 +8,7 @@
 
 This package helps you to validate how you mutate your Vuex store. You can say that it is a Validator for the mutations. You can easily validate the payload for each of your mutations, so that you can be sure of the integrity of your Store Data.
 
-This package also has support for any custom schema validator you may choose. You can create your own implementation and extend this package to use that shcema.
+This package also has support for any custom schema validator you may choose. You can create your own implementation and extend this package to use that schema.
 
 Though Vuex allows you to set the store state directly without calling any mutation. This package won't validate anything outside the mutations.
 
@@ -22,11 +22,14 @@ $ npm install --save vuex-store-validator
 $ yarn add vuex-store-validator
 ```
 
-By default it comes with `Joi` validator. It also has support for `AJV`, `Superstruct` and `Yup` validation engine. Read their respective docs to find out which one is best for you.
+By default it comes with `Joi` validator. It also has support for `Superstruct` and `Yup` validation engine. Read their respective docs to find out which one is best for you.
 - [Joi Documentation](https://github.com/sideway/joi/blob/master/API.md)
-- [Ajv Documentation](https://github.com/ajv-validator/ajv/blob/master/README.md)
 - [Superstruct Documentation](https://github.com/ianstormtaylor/superstruct/blob/master/Readme.md)
 - [Yup Documentation](https://github.com/jquense/yup/blob/master/README.md)
+
+It did come with `Ajv` validation engine on `^1.0` but for the sake of bundle size it is removed from the bundle, but no need to worry, you can still make use of it by providing custom validator to the package.
+
+- [Ajv Documentation](https://github.com/ajv-validator/ajv/blob/master/README.md)
 
 #### Setup Joi
 If you want to use joi then you'll have to install it as your project dependency.
@@ -62,7 +65,17 @@ $ yarn add yup
 ```
 
 #### Setup Ajv
-If you think that ajv is best for you then you won't have to install anything as the schema builder is plain javascript object.
+If you want to use ajv then you'll have to install it as your project dependency.
+
+```bash
+// NPM:
+$ npm install --save ajv
+
+// Yarn:
+$ yarn add ajv
+```
+
+After that, see how to setup `AJV` with this package here: [Custom Validator Usage](#boom-custom-validator-usage)
 
 ## :fire: Usage
 
@@ -104,16 +117,6 @@ SET_USER: Joi.object({
     age: Joi.number().required(),
 }).required(),
 
-// Ajv Schema...
-SET_USER: {
-    type: 'object',
-    properties: {
-        name: {type: 'string'},
-        age: {type: 'number'},
-    },
-    required: ['name', 'age'],
-},
-
 // Superstruct Schema...
 import {object, string, number} from 'superstruct';
 SET_USER: object({
@@ -131,9 +134,6 @@ SET_USER: object().shape({
 
 **NOTE:** If you want to use anything other than Joi then, you will have to add the engine option in the plugin registration
 ```js
-// Ajv...
-plugins: [new VuexStoreValidator({engine: ENGINE.AJV})],
-
 // Superstruct...
 plugins: [new VuexStoreValidator({engine: ENGINE.SUPERSTRUCT})],
 
@@ -164,7 +164,7 @@ This will work for all the nested modules as well. Just remember to add a new `r
 
 Let's face it, the real world projects are complex. It's not as straight forward as defining a schema. Sometimes you need to have conditional schema which depends on some other state property or the mutation payload itself.
 
-But don't worry, you can even define the schema in a closure. You have 2 parameters available in that clsoure. The store and the mutation payload itself.
+But don't worry, you can even define the schema in a closure. You have 2 parameters available in that closure. The store and the mutation payload itself.
 
 **Example:**
 ```js
@@ -198,33 +198,33 @@ export default new Vuex.Store({
 
 If you set strict mode to `true`, then if you don't have a schema defined for any of your mutation, it will throw an exception.
 
-### :boom: Custom Validatior Usage
+### :boom: Custom Validator Usage
 
 ```js
+import Ajv from 'ajv';
+
 // Define an async validator...
 /**
  * It accepts the schema and the data payload
- * It should throw an error if your validaion fails OR
+ * It should throw an error if your validation fails OR
  * The return value should be the error string or null
  */
-const myCustomValidator = async (schema, data) => {
-    const schemaArray = Object.keys(schema);
+const ajvEngine = async (schema, data) => {
+  const ajv = new Ajv({ jsonPointers: true, $data: true });
+  const validate = ajv.compile(schema || {});
 
-    for (let index = 0; index < schemaArray.length; index++) {
-        const key = schemaArray[index];
-
-        if (schema[key](data[key]) !== data[key]) {
-            throw new Error(`"${key}" is required`);
-        }
-    }
+  await validate(data);
+  if (validate.errors) {
+    throw new Error(validate.errors.map((item) => item.message).join(', '));
+  }
 };
 
 // Now extend with the custom validator...
 plugins: [
     new VuexStoreValidator({
-        engine: 'custom',
+        engine: 'ajv',
         extend: {
-            custom: myCustomValidator,
+            ajv: ajvEngine,
         },
     })
 ]
@@ -234,9 +234,16 @@ plugins: [
 // Now your schema would look something like this:
 rules: {
     MUTATION_NAME: {
-        name: String,
-        email: String,
-        age: Number,
+        type: 'object',
+        properties: {
+            name: {
+                type: 'string',
+            },
+            age: {
+                type: 'number',
+            },
+        },
+        required: ['name', 'age'],
     },
 }
 ```
@@ -245,13 +252,13 @@ You can also leverage Vue PropType Validator and make your own implementation of
 
 ### :eyes: Caution
 
-This package won't prevent you from setting invalid data to your store. But it will throw appropriate exception everytime you set invalid data, so that you can be aware of where bad data might be coming from.
+This package won't prevent you from setting invalid data to your store. But it will throw appropriate exception every time you set invalid data, so that you can be aware of where bad data might be coming from.
 
 You can see and debug your code based on the Production Logs related to any bad data. If you are using Ignition or Sentry.
 
 ## :microscope: Testing
 
-After Cloning the repository, install all npm dependecies by running: `npm install`.
+After Cloning the repository, install all npm dependencies by running: `npm install`.
 
 Then Run Tests:
 
