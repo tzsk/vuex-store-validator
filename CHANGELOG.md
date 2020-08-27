@@ -1,5 +1,9 @@
 # Changelog
 
+## Version: 2.0.1
+### Changes
+- Updated dependencies
+
 ## Version: 2.0.0
 ### Removed
 - Removed AJV from the bundle (Can be setup manually)
