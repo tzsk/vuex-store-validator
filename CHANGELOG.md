@@ -1,8 +1,11 @@
 # Changelog
 
+## Version 2.0.2
+- Updated dependencies
+
 ## Version: 2.0.1
 ### Changes
-- Updated dependencies
+- Invalid release
 
 ## Version: 2.0.0
 ### Removed
