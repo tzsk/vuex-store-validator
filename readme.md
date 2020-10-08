@@ -1,5 +1,6 @@
 # :gift: Vuex Store Validator
 ![Vuex Store Validator](./assets/main.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftzsk%2Fvuex-store-validator.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftzsk%2Fvuex-store-validator?ref=badge_shield)
 
 ![Build](https://img.shields.io/github/workflow/status/tzsk/vuex-store-validator/Tests/master?logo=github&style=for-the-badge)
 ![Coveralls](https://img.shields.io/coveralls/github/tzsk/vuex-store-validator/master?logo=coveralls&style=for-the-badge)
@@ -285,3 +286,6 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 [link-author]: https://github.com/tzsk
 [link-contributors]: ../../contributors
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftzsk%2Fvuex-store-validator.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftzsk%2Fvuex-store-validator?ref=badge_large)
