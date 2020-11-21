@@ -59,7 +59,7 @@ describe('Validator', () => {
   test('it can also validate with superstruct engine', async () => {
     await expect(executeValidation(superStructStore, 'SET_USER', { name: 'foo' }, { engine: ENGINE.SUPERSTRUCT }))
       .rejects
-      .toThrowError(/Expected a value of type `number` for `age` but received `undefined`. for mutation: SET_USER/);
+      .toThrowError(/At path: age -- Expected a number, but received: undefined for mutation: SET_USER/);
 
     await expect(executeValidation(superStructStore, 'SET_USER', { name: 'foo', age: 25 }, { engine: ENGINE.SUPERSTRUCT }))
       .resolves.not.toThrowError();
