@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "superstruct": "^0.12.1"
+    "superstruct": "^0.13.0"
   },
   "peerDependencies": {
     "vue": "^2.6.11",
